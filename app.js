@@ -95,10 +95,11 @@ function openModal(vault) {
 
   html += '<dl class="modal-fields">';
   html += fieldHtml('Location', vault.location, vault.location_disclaimer);
-  html += fieldHtml('Keycard', vault.keycard, vault.keycard_disclaimer);
 
   if (!isEmpty(vault.keycard_screenshot)) {
-    html += `<div class="field keycard-img-field"><dd><img src="${esc(vault.keycard_screenshot)}" alt="${esc(vault.keycard)}" class="keycard-img">${disclaimerHtml(vault.keycard_screenshot_disclaimer)}</dd></div>`;
+    html += `<div class="field keycard-row"><dt>Keycard</dt><dd>${esc(vault.keycard)}${disclaimerHtml(vault.keycard_disclaimer)}<img src="${esc(vault.keycard_screenshot)}" alt="${esc(vault.keycard)}" class="keycard-img">${disclaimerHtml(vault.keycard_screenshot_disclaimer)}</dd></div>`;
+  } else {
+    html += fieldHtml('Keycard', vault.keycard, vault.keycard_disclaimer);
   }
 
   html += fieldHtml('Security Clearance', vault.security_clearance, vault.security_clearance_disclaimer);
