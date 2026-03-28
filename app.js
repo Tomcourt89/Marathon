@@ -4,6 +4,63 @@ const modalContent = modal.querySelector('.modal-content');
 const lightboxDialog = document.getElementById('lightbox-dialog');
 const lightboxImg = lightboxDialog.querySelector('.lightbox-img');
 const tooltip = document.getElementById('disclaimer-tooltip');
+const countdownBanner = document.getElementById('countdown-banner');
+
+const SCHEDULE = { openDay: 4, closeDay: 0, hour: 10, minute: 0 };
+
+(function initCountdown() {
+  function getPTOffset() {
+    const now = new Date();
+    const utcStr = now.toLocaleString('en-US', { timeZone: 'UTC' });
+    const ptStr = now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
+    return new Date(utcStr).getTime() - new Date(ptStr).getTime();
+  }
+
+  const ptOffset = getPTOffset();
+
+  function getNextEvent(now) {
+    const ptNow = new Date(now.getTime() - ptOffset);
+    const day = ptNow.getUTCDay();
+    const weekStart = new Date(Date.UTC(ptNow.getUTCFullYear(), ptNow.getUTCMonth(), ptNow.getUTCDate() - day));
+
+    const openUtc = new Date(weekStart.getTime() + (SCHEDULE.openDay * 86400000) + (SCHEDULE.hour * 3600000) + (SCHEDULE.minute * 60000) + ptOffset);
+    let closeUtc = new Date(weekStart.getTime() + (SCHEDULE.closeDay * 86400000) + (SCHEDULE.hour * 3600000) + (SCHEDULE.minute * 60000) + ptOffset);
+    if (closeUtc <= openUtc) closeUtc = new Date(closeUtc.getTime() + 7 * 86400000);
+
+    const nowMs = now.getTime();
+
+    if (nowMs >= openUtc.getTime() && nowMs < closeUtc.getTime()) {
+      return { open: true, ms: closeUtc.getTime() - nowMs };
+    }
+
+    let nextOpen = openUtc.getTime();
+    if (nowMs >= nextOpen) nextOpen += 7 * 86400000;
+    return { open: false, ms: nextOpen - nowMs };
+  }
+
+  function render() {
+    const { open, ms } = getNextEvent(new Date());
+    const totalSec = Math.max(0, Math.floor(ms / 1000));
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+
+    const status = open ? 'open' : 'closed';
+    const statusText = open ? 'Open' : 'Closed';
+    const label = open ? 'Closes in' : 'Opens in';
+    countdownBanner.setAttribute('data-status', status);
+
+    let units = '';
+    units += `<span class="countdown-unit"><span class="countdown-value">${h}</span><span class="countdown-label">hrs</span></span>`;
+    units += `<span class="countdown-unit"><span class="countdown-value">${String(m).padStart(2, '0')}</span><span class="countdown-label">min</span></span>`;
+    units += `<span class="countdown-unit"><span class="countdown-value">${String(s).padStart(2, '0')}</span><span class="countdown-label">sec</span></span>`;
+
+    countdownBanner.innerHTML = `<span class="countdown-status">${statusText}</span><span>${label}</span><span class="countdown-timer">${units}</span>`;
+  }
+
+  render();
+  setInterval(render, 1000);
+})();
 
 let lastFocused = null;
 let activePopup = null;
