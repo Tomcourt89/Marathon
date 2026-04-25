@@ -130,8 +130,8 @@
     "map_screenshot_disclaimer": "",
     "visual_screenshot": "./assets/vault6vis.png",
     "visual_screenshot_disclaimer": "",
-    "location": "Lab elevator above Tranquility Derelict (North)",
-    "location_disclaimer": "Also from Tranquility Dormant (South), but Derelict is closer to the vault door",
+    "location": "Lab elevator above Tranquility Derelict/Dormant (North/South)",
+    "location_disclaimer": "",
     "keycard": "Lab",
     "keycard_disclaimer": "",
     "keycard_screenshot": "./assets/redkey.png",
@@ -155,5 +155,37 @@
       { "name": "Symbol 4", "image": "./assets/symbol4.png" }
     ],
     "symbol_slots": 3
+  },
+  {
+    "vault_number": 7,
+    "map_screenshot": "./assets/vault6loc.png",
+    "map_screenshot_disclaimer": "Directly opposite vault 6",
+    "visual_screenshot": "./assets/vault7vis.png",
+    "visual_screenshot_disclaimer": "",
+    "location": "Lab elevator above Tranquility Derelict/Dormant (North/South)",
+    "location_disclaimer": "",
+    "keycard": "DNA Access Card",
+    "keycard_disclaimer": "RNG drop from previous vaults, potentially guaranteed from 5/6",
+    "keycard_screenshot": "./assets/dnakey.png",
+    "keycard_screenshot_disclaimer": "",
+    "security_clearance": "Level 3",
+    "security_clearance_disclaimer": "Ideally you want to be ~4.5 if you want to do the final loot room. There is usually one terminal in the main lab area where you fight the gold bar and there is a door at the back of the final loot room that accepts a battery and inside is another terminal for 3 pips each",
+    "batteries": 10,
+    "batteries_disclaimer": "1 already filled in the vault door, 3 required to open the middle room.",
+    "coolant": "None",
+    "coolant_disclaimer": "",
+    "outside_vault_instructions": "In any of the POIs there will be a terminal where you can place the DNA Access Card (has moving ferrofluid next to it). This will give an item with a 4 letter combination on it (TCAG/ACGT etc). Once you have it a marker on the map for another POI will appear. Take the item to this POI and interact with the same looking terminal there and it will light up 4 monitors around the room showing the 4 letters. Activate these monitors in the same order shown on the item. Once done head to Lab elevator above Tranquility Derelict/Dormant. Once in the Lab and after you've killed the gold bar, you need to place 3 batteries in the door at the center (directly opposite vault 6) and turn off the data corruption. Go inside and place the item in the terminal and the windows will go green and smash giving you access to the vault 7 door directly ahead (7 batteries required to open).",
+    "outside_vault_instructions_disclaimer": "",
+    "inside_vault_instructions": "Through the vault door will be a jumping puzzle through several tick nests. At the top of this puzzle will be a room with a bunch of dead UESC and a small room to the left side. In this room will be an exfil (if youre out of time or fail at compiler), some containers with ammo, health and grenades for the boss, and a button on the side of the door frame to activate the air lock. Hit it and all the team needs to enter and activate. Once at the top you'll face the compiler boss. Around the room will be multiple symbol terminals, you need to hit 3 of the same symbol to create a green bubble in the center of the room. From inside this bubble you can shoot the boss until it opens up. Throwing emp grenades at the boss when it is open will slow it down and make it easier to hit. If dps ends, you can repeat the process by hitting 3 more of the same symbol to create another bubble. Once the boss is dead, the back of the room will open up and reveal the loot room. To the right of the door will be a room with the exfil terminal to get out, and at the very far left will be a door with a battery slot, allowing you get one final security monitor if you need more to get to clearance 5. The level 5 loot room is roughly at the center of this long room.",
+    "inside_vault_instructions_disclaimer": "",
+    "required_items": ["Anti-virus pack"],
+    "required_items_disclaimer": "",
+    "symbols": [
+      { "name": "Symbol 1", "image": "./assets/symbolt.png" },
+      { "name": "Symbol 2", "image": "./assets/symbolc.png" },
+      { "name": "Symbol 3", "image": "./assets/symbola.png" },
+      { "name": "Symbol 4", "image": "./assets/symbolg.png" }
+    ],
+    "symbol_slots": 4
   }
 ]

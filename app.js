@@ -68,7 +68,19 @@ let activePopupSlot = null;
 let symbolSlots = [null, null, null];
 let pinnedBtn = null;
 
-const SLOT_LABELS = ['Left', 'Top', 'Right'];
+function getSymbolConfig(vault) {
+  if (vault.vault_number === 7) {
+    return {
+      labels: ['1st', '2nd', '3rd', '4th'],
+      hint: 'Click each slot to record the code from the item. Order: 1st \u2192 2nd \u2192 3rd \u2192 4th.'
+    };
+  }
+
+  return {
+    labels: ['Left', 'Top', 'Right'],
+    hint: 'Click each slot to record the symbols from the lab monitors. Order: Left \u2192 Top \u2192 Right.'
+  };
+}
 
 fetch('data.json')
   .then(r => r.json())
@@ -99,6 +111,7 @@ function renderCards(vaults) {
   vaults.forEach(vault => {
     const card = document.createElement('article');
     card.className = 'vault-card';
+    card.dataset.vault = String(vault.vault_number);
     card.tabIndex = 0;
     card.setAttribute('role', 'button');
     card.setAttribute('aria-label', `View Vault ${vault.vault_number} details`);
@@ -130,7 +143,7 @@ function renderCards(vaults) {
 
 function openModal(vault) {
   lastFocused = document.activeElement;
-  symbolSlots = [null, null, null];
+  symbolSlots = Array(vault.symbol_slots || 3).fill(null);
 
   let html = '<div class="modal-header">';
   html += `<h2 id="modal-title">Vault ${vault.vault_number}</h2>`;
@@ -200,12 +213,15 @@ function setupModalListeners(vault) {
 }
 
 function buildSymbolSelectorHtml(vault) {
+  const config = getSymbolConfig(vault);
+  const slotCount = vault.symbol_slots || 3;
   let html = '<div class="symbol-selector">';
   html += '<h3>Symbol Sequence</h3>';
-  html += '<p class="symbol-hint">Click each slot to record the symbols from the lab monitors. Order: Left \u2192 Top \u2192 Right.</p>';
+  html += `<p class="symbol-hint">${config.hint}</p>`;
   html += '<div class="symbol-slots">';
-  for (let i = 0; i < (vault.symbol_slots || 3); i++) {
-    html += `<div class="symbol-slot-wrap"><button class="symbol-slot" type="button" data-slot="${i}" aria-label="${SLOT_LABELS[i]} symbol slot \u2014 empty"><span class="symbol-slot-placeholder">?</span></button><span class="symbol-slot-label">${SLOT_LABELS[i]}</span></div>`;
+  for (let i = 0; i < slotCount; i++) {
+    const slotLabel = config.labels[i] || `Slot ${i + 1}`;
+    html += `<div class="symbol-slot-wrap"><button class="symbol-slot" type="button" data-slot="${i}" aria-label="${slotLabel} symbol slot \u2014 empty"><span class="symbol-slot-placeholder">?</span></button><span class="symbol-slot-label">${slotLabel}</span></div>`;
   }
   html += '</div>';
   html += '<button class="symbol-clear-btn" type="button">Clear all</button>';
@@ -214,6 +230,8 @@ function buildSymbolSelectorHtml(vault) {
 }
 
 function setupSymbolSelector(vault) {
+  const config = getSymbolConfig(vault);
+  const slotCount = vault.symbol_slots || 3;
   const popup = document.createElement('div');
   popup.className = 'symbol-popup';
   popup.setAttribute('role', 'listbox');
@@ -253,7 +271,8 @@ function setupSymbolSelector(vault) {
         slotBtn.innerHTML = `<span class="symbol-slot-text">${esc(name)}</span>`;
       }
       slotBtn.classList.add('filled');
-      slotBtn.setAttribute('aria-label', `${SLOT_LABELS[slotIndex]} symbol slot \u2014 ${name}`);
+      const slotLabel = config.labels[slotIndex] || `Slot ${slotIndex + 1}`;
+      slotBtn.setAttribute('aria-label', `${slotLabel} symbol slot \u2014 ${name}`);
     });
 
     popup.appendChild(opt);
@@ -287,12 +306,13 @@ function setupSymbolSelector(vault) {
   });
 
   modal.querySelector('.symbol-clear-btn').addEventListener('click', () => {
-    symbolSlots = [null, null, null];
+    symbolSlots = Array(slotCount).fill(null);
     closeSymbolPopup();
     modal.querySelectorAll('.symbol-slot').forEach((btn, i) => {
       btn.innerHTML = '<span class="symbol-slot-placeholder">?</span>';
       btn.classList.remove('filled');
-      btn.setAttribute('aria-label', `${SLOT_LABELS[i]} symbol slot \u2014 empty`);
+      const slotLabel = config.labels[i] || `Slot ${i + 1}`;
+      btn.setAttribute('aria-label', `${slotLabel} symbol slot \u2014 empty`);
     });
   });
 }
