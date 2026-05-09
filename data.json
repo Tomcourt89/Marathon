@@ -22,7 +22,10 @@
     "inside_vault_instructions": "There is three symbol panels around the room, hit all 3.",
     "inside_vault_instructions_disclaimer": "",
     "required_items": [],
-    "required_items_disclaimer": ""
+    "required_items_disclaimer": "",
+    "unique_weapon": "DRRVISH",
+    "unique_weapon_disclaimer": "Unique variant of the BRRT SMG, with an extended magazine",
+    "unique_weapon_image": "./assets/drrvish.jpg"
   },
   {
     "vault_number": 2,
@@ -47,7 +50,10 @@
     "inside_vault_instructions": "There will be a symbol on the wall, look for 3 terminals with the matching symbol and interact with them all. Panels are around to remove ice.",
     "inside_vault_instructions_disclaimer": "",
     "required_items": [],
-    "required_items_disclaimer": ""
+    "required_items_disclaimer": "",
+    "unique_weapon": "V99 Watchtower",
+    "unique_weapon_disclaimer": "Unique variant of the V99 Channel Rifle, with greatly increased equip and scope speed",
+    "unique_weapon_image": "./assets/watchtower.jpg"
   },
   {
     "vault_number": 3,
@@ -67,12 +73,15 @@
     "batteries_disclaimer": "4 already filled in the vault",
     "coolant": "None",
     "coolant_disclaimer": "Already filled in on the vault",
-    "outside_vault_instructions": "Boss location on the map in Optimization, Calibration, Stockpile or Repository. Don't necessarily need to kill the Warden but it will unblock the doors if you do. Alternative is to wait it out after picking up the required item (couple of minutes)",
+    "outside_vault_instructions": "Boss location on the map in Optimization, Calibration, Stockpile or Repository. Don't necessarily need to kill the Warden but it will be easier to unblock the doors if you do. Alternative is to wait it out after picking up the required item (couple of minutes)",
     "outside_vault_instructions_disclaimer": "Level 4 scanner will show them, possibly level 3",
     "inside_vault_instructions": "There will be a symbol on the wall, look for 3 terminals with the matching symbol and interact with them all.",
     "inside_vault_instructions_disclaimer": "",
     "required_items": ["Pump Credentials"],
-    "required_items_disclaimer": ""
+    "required_items_disclaimer": "",
+    "unique_weapon": "Salt Wages",
+    "unique_weapon_disclaimer": "Unique variant of the Conquest LMG, with faster minimum and maximum fire rates",
+    "unique_weapon_image": "./assets/saltwages.jpg"
   },
   {
     "vault_number": 4,
@@ -97,7 +106,10 @@
     "inside_vault_instructions": "There will be a symbol on the wall, look for 3 terminals with the matching symbol and interact with them all.",
     "inside_vault_instructions_disclaimer": "",
     "required_items": ["Colony Credentials"],
-    "required_items_disclaimer": ""
+    "required_items_disclaimer": "",
+    "unique_weapon": "V85 Free-tail",
+    "unique_weapon_disclaimer": "Unique variant of the V85 Circuit Breaker, with increased charge and fire rates.",
+    "unique_weapon_image": "./assets/freetail.png"
   },
   {
     "vault_number": 5,
@@ -122,7 +134,10 @@
     "inside_vault_instructions": "There will be a symbol on the wall, look for 3 terminals with the matching symbol and interact with them all.",
     "inside_vault_instructions_disclaimer": "",
     "required_items": ["Tranquility Credentials"],
-    "required_items_disclaimer": ""
+    "required_items_disclaimer": "",
+    "unique_weapon": "M77 Omnipositor",
+    "unique_weapon_disclaimer": "Unique variant of the M77 Assault Rifle, with faster rate of fire and larger magazine.",
+    "unique_weapon_image": "./assets/m77.png"
   },
   {
     "vault_number": 6,
@@ -154,7 +169,10 @@
       { "name": "Symbol 3", "image": "./assets/symbol3.png" },
       { "name": "Symbol 4", "image": "./assets/symbol4.png" }
     ],
-    "symbol_slots": 3
+    "symbol_slots": 3,
+    "unique_weapon": "Fist of Phobos",
+    "unique_weapon_disclaimer": "Unique variant of the M1T Stryder, with greatly enhanced proximity sensor and range.",
+    "unique_weapon_image": "./assets/phobos.png"
   },
   {
     "vault_number": 7,
@@ -186,6 +204,9 @@
       { "name": "Symbol 3", "image": "./assets/symbola.png" },
       { "name": "Symbol 4", "image": "./assets/symbolg.png" }
     ],
-    "symbol_slots": 4
+    "symbol_slots": 4,
+    "unique_weapon": "Biotoxic Disinjector",
+    "unique_weapon_disclaimer": "",
+    "unique_weapon_image": "./assets/disinjector.png"
   }
 ]

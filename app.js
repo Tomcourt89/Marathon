@@ -125,6 +125,7 @@ function renderCards(vaults) {
     if (!isEmpty(vault.required_items)) {
       html += fieldHtml('Required Items', vault.required_items, vault.required_items_disclaimer);
     }
+    html += fieldHtml('Unique Weapon', vault.unique_weapon, vault.unique_weapon_disclaimer);
     html += '</dl>';
 
     card.innerHTML = html;
@@ -182,6 +183,15 @@ function openModal(vault) {
 
   html += fieldHtml('Outside Vault', vault.outside_vault_instructions, vault.outside_vault_instructions_disclaimer);
   html += fieldHtml('Inside Vault', vault.inside_vault_instructions, vault.inside_vault_instructions_disclaimer);
+
+  if (!isEmpty(vault.unique_weapon)) {
+    if (!isEmpty(vault.unique_weapon_image)) {
+      html += `<div class="field weapon-row"><dt>Unique Weapon</dt><dd>${esc(vault.unique_weapon)}${disclaimerHtml(vault.unique_weapon_disclaimer)}<img src="${esc(vault.unique_weapon_image)}" alt="${esc(vault.unique_weapon)}" class="weapon-img"></dd></div>`;
+    } else {
+      html += fieldHtml('Unique Weapon', vault.unique_weapon, vault.unique_weapon_disclaimer);
+    }
+  }
+
   html += '</dl>';
 
   if (vault.symbols && vault.symbols.length > 0) {
@@ -203,7 +213,7 @@ function setupModalListeners(vault) {
     img.addEventListener('click', () => openLightbox(img.src, img.alt));
   });
 
-  modal.querySelectorAll('.keycard-img').forEach(img => {
+  modal.querySelectorAll('.keycard-img, .weapon-img').forEach(img => {
     img.addEventListener('click', () => openLightbox(img.src, img.alt));
   });
 
