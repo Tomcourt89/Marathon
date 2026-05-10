@@ -6,36 +6,83 @@ const lightboxImg = lightboxDialog.querySelector('.lightbox-img');
 const tooltip = document.getElementById('disclaimer-tooltip');
 const countdownBanner = document.getElementById('countdown-banner');
 
-const SCHEDULE = { openDay: 4, closeDay: 0, hour: 10, minute: 0 };
+const SCHEDULE = { openDay: 4, hour: 10, minute: 0 };
 
 (function initCountdown() {
-  function getPTOffset() {
-    const now = new Date();
-    const utcStr = now.toLocaleString('en-US', { timeZone: 'UTC' });
-    const ptStr = now.toLocaleString('en-US', { timeZone: 'America/Los_Angeles' });
-    return new Date(utcStr).getTime() - new Date(ptStr).getTime();
+  const ptFormatter = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Los_Angeles',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+    hour12: false, weekday: 'short'
+  });
+
+  function getPtParts(date) {
+    const parts = {};
+    for (const p of ptFormatter.formatToParts(date)) parts[p.type] = p.value;
+    return {
+      year: +parts.year,
+      month: +parts.month,
+      day: +parts.day,
+      hour: parts.hour === '24' ? 0 : +parts.hour,
+      minute: +parts.minute,
+      second: +parts.second,
+      weekday: parts.weekday
+    };
   }
 
-  const ptOffset = getPTOffset();
+  function ptWallToUtc(year, month, day, hour, minute) {
+    let guess = Date.UTC(year, month - 1, day, hour + 8, minute);
+    for (let i = 0; i < 3; i++) {
+      const p = getPtParts(new Date(guess));
+      const actual = Date.UTC(p.year, p.month - 1, p.day, p.hour, p.minute, p.second);
+      const desired = Date.UTC(year, month - 1, day, hour, minute);
+      const diff = desired - actual;
+      if (diff === 0) return guess;
+      guess += diff;
+    }
+    return guess;
+  }
+
+  const WEEKDAYS = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
 
   function getNextEvent(now) {
-    const ptNow = new Date(now.getTime() - ptOffset);
-    const day = ptNow.getUTCDay();
-    const weekStart = new Date(Date.UTC(ptNow.getUTCFullYear(), ptNow.getUTCMonth(), ptNow.getUTCDate() - day));
+    const pt = getPtParts(now);
+    const ptDayIndex = WEEKDAYS[pt.weekday];
+    const daysSinceOpen = (ptDayIndex - SCHEDULE.openDay + 7) % 7;
 
-    const openUtc = new Date(weekStart.getTime() + (SCHEDULE.openDay * 86400000) + (SCHEDULE.hour * 3600000) + (SCHEDULE.minute * 60000) + ptOffset);
-    let closeUtc = new Date(weekStart.getTime() + (SCHEDULE.closeDay * 86400000) + (SCHEDULE.hour * 3600000) + (SCHEDULE.minute * 60000) + ptOffset);
-    if (closeUtc <= openUtc) closeUtc = new Date(closeUtc.getTime() + 7 * 86400000);
+    const baseUtc = Date.UTC(pt.year, pt.month - 1, pt.day) - daysSinceOpen * 86400000;
+    const baseDate = new Date(baseUtc);
+    const openUtc = ptWallToUtc(
+      baseDate.getUTCFullYear(),
+      baseDate.getUTCMonth() + 1,
+      baseDate.getUTCDate(),
+      SCHEDULE.hour,
+      SCHEDULE.minute
+    );
+
+    const closeBase = new Date(baseUtc + 3 * 86400000);
+    const closeUtc = ptWallToUtc(
+      closeBase.getUTCFullYear(),
+      closeBase.getUTCMonth() + 1,
+      closeBase.getUTCDate(),
+      SCHEDULE.hour,
+      SCHEDULE.minute
+    );
 
     const nowMs = now.getTime();
-
-    if (nowMs >= openUtc.getTime() && nowMs < closeUtc.getTime()) {
-      return { open: true, ms: closeUtc.getTime() - nowMs };
+    if (nowMs >= openUtc && nowMs < closeUtc) {
+      return { open: true, ms: closeUtc - nowMs };
     }
 
-    let nextOpen = openUtc.getTime();
-    if (nowMs >= nextOpen) nextOpen += 7 * 86400000;
-    return { open: false, ms: nextOpen - nowMs };
+    const nextBase = new Date(baseUtc + 7 * 86400000);
+    const nextOpenUtc = ptWallToUtc(
+      nextBase.getUTCFullYear(),
+      nextBase.getUTCMonth() + 1,
+      nextBase.getUTCDate(),
+      SCHEDULE.hour,
+      SCHEDULE.minute
+    );
+    return { open: false, ms: nextOpenUtc - nowMs };
   }
 
   function render() {
